@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:gravity="center"
+        android:text="Create Account"
+        android:textColor="#000"
+        android:textSize="32sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/username"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:inputType="text"
+        android:hint="Enter Username"
+        android:padding="10dp"
+        android:background="@drawable/register_edittext_background"
+        android:elevation="16dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/password"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:inputType="textPassword"
+        android:hint="Enter Password"
+        android:padding="10dp"
+        android:background="@drawable/register_edittext_background"
+        android:elevation="16dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/email"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:drawableStart="@drawable/ic_baseline_mail_24"
+        android:hint="Enter Email"
+        android:padding="10dp"
+        android:background="@drawable/register_edittext_background"
+        android:elevation="16dp"
+        android:autofillHints="emailAddress"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/mobile"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:drawableLeft="@drawable/ic_baseline_phone_24"
+        android:hint="Enter Mobile"
+        android:padding="10dp"
+        android:background="@drawable/register_edittext_background"
+        android:elevation="16dp"
+        />
+
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Button_reg"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Register"
+        />
+
+    <TextView
+        android:id="@+id/text_view_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Already have an account.\nLogin Here"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="end"-->
+<!--        android:layout_marginTop="20dp">-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Create"-->
+<!--            android:layout_marginRight="20sp"-->
+<!--            android:layout_marginTop="4sp"-->
+<!--            android:textColor="@color/GoldenYellow"-->
+<!--            android:textSize="30sp"/>-->
+<!--        <ImageButton-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:background="@drawable/register_btn"-->
+<!--            />-->
+
+<!--    </LinearLayout>-->
+
+</LinearLayout>
