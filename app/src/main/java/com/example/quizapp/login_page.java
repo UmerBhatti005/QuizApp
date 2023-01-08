@@ -36,7 +36,7 @@ public class login_page extends AppCompatActivity {
     Button bProceed;
 
     // four text fields
-    EditText etUsername, etPassword, etEmail, etMobile;
+    EditText etPassword, etEmail;
 
     // one boolean variable to check whether all the text fields
     // are filled by the user, properly or not.
@@ -51,7 +51,7 @@ public class login_page extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
 
         // register buttons with their proper IDs.
-        bProceed = findViewById(R.id.Button_reg);
+        bProceed = findViewById(R.id.Button_lgn);
 
         // register all the EditText fields with their IDs.
         etPassword = findViewById(R.id.password);
@@ -59,7 +59,6 @@ public class login_page extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new  ProgressDialog(this);
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         bProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,8 +66,6 @@ public class login_page extends AppCompatActivity {
                 isAllFieldsChecked = CheckAllFields();
 
                 if(isAllFieldsChecked) {
-
-
                     firebaseAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -84,24 +81,6 @@ public class login_page extends AppCompatActivity {
                             }
                         }
                     });
-
-
-//                    Map<String, Object> user = new HashMap<>();
-//                    user.put("Username", etUsername.getText().toString());
-//                    user.put("Password", etPassword.getText().toString());
-//                    user.put("Email", etEmail.getText().toString());
-//                    user.put("Mobile", etMobile.getText().toString());
-//                    firestore.collection("Users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                        @Override
-//                        public void onSuccess(DocumentReference documentReference) {
-//                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
                 }
             }
         });
@@ -125,6 +104,13 @@ public class login_page extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if(currentUser != null){
+            Intent myIntent = new Intent(getApplicationContext(), activity_home_page.class);
+            startActivity(myIntent);
+        }
 
     }
 

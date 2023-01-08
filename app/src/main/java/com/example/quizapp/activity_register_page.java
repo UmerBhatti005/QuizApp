@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.regex.Pattern;
 
 public class activity_register_page extends AppCompatActivity {
 
@@ -28,7 +33,7 @@ public class activity_register_page extends AppCompatActivity {
     // one buttons
 
     FirebaseAuth firebaseAuth;
-
+    DatabaseReference databaseReference;
     Button bProceed;
 
     // four text fields
@@ -59,8 +64,9 @@ public class activity_register_page extends AppCompatActivity {
         etMobile = findViewById(R.id.mobile);
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("User");
         progressDialog = new  ProgressDialog(this);
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
         bProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,23 +75,29 @@ public class activity_register_page extends AppCompatActivity {
 
                 if(isAllFieldsChecked) {
 
+                    final UsersData data = new UsersData(userName, email, mobileNumber);
 
                     firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
 
-                                UsersData data = new UsersData(userName, email, mobileNumber);
-                                FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(data).
-                                        addOnCompleteListener(new OnCompleteListener<Void>() {
+                                task.getResult().getUser().getUid();
+
+                                firestore.collection("User").document().set(data)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
-                                                Intent myIntent = new Intent(view.getContext(), login_page.class);
-                                                firestore = FirebaseFirestore.getInstance();
-                                                startActivity(myIntent);
+                                                if(task.isSuccessful()) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                                                    Intent myIntent = new Intent(view.getContext(), login_page.class);
+                                                    firestore = FirebaseFirestore.getInstance();
+                                                    startActivity(myIntent);
+                                                }
+                                                else{
+                                                    Toast.makeText(getApplicationContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                }
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
@@ -93,7 +105,7 @@ public class activity_register_page extends AppCompatActivity {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
                                             }
-                                        });
+                                        }) ;
                             }
                             else{
                                 progressDialog.dismiss();
@@ -156,7 +168,7 @@ public class activity_register_page extends AppCompatActivity {
             etEmail.setError("Email is required");
             return false;
         }
-        if (email.matches(emailvalidation))  {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())  {
             etEmail.setError("Enter Correct Email");
             return false;
         }
