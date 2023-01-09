@@ -1,4 +1,4 @@
-package com.example.quizapp;
+package com.example.quizapp.Model;
 
 public class UsersData {
 
@@ -11,3 +11,4 @@ public class UsersData {
         MobileNumber = mobileNumber;
     }
 }
+

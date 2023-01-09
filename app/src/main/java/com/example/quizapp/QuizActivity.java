@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.quizapp.Model.Questions;
 import com.example.quizapp.databinding.ActivityQuizBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.internal.ContextUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -202,7 +202,7 @@ public class QuizActivity extends AppCompatActivity {
                     index++;
                     setNextQuestion();
                 } else {
-                    Intent intent = new Intent(QuizActivity.this, activity_home_page.class);
+                    Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
                     intent.putExtra("correct", correctAnswers);
                     intent.putExtra("total", questions.size());
                     startActivity(intent);

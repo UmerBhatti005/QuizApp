@@ -3,12 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ResultActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity_home_page"
             android:exported="true">
@@ -31,6 +39,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -57,4 +66,5 @@
                 android:value="" />
         </activity>
     </application>
+
 </manifest>
