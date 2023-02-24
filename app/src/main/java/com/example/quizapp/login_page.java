@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,13 +38,13 @@ public class login_page extends AppCompatActivity {
     Button bProceed;
 
     // four text fields
-    EditText etPassword, etEmail;
+    TextInputLayout etPassword, etEmail;
 
     // one boolean variable to check whether all the text fields
     // are filled by the user, properly or not.
     boolean isAllFieldsChecked = false;
 
-    String emailvalidation = "/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/";
+    String email, password;
 
     ProgressDialog progressDialog;
     @Override
@@ -66,7 +68,7 @@ public class login_page extends AppCompatActivity {
                 isAllFieldsChecked = CheckAllFields();
 
                 if(isAllFieldsChecked) {
-                    firebaseAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
@@ -77,7 +79,7 @@ public class login_page extends AppCompatActivity {
                             }
                             else{
                                 progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -105,32 +107,35 @@ public class login_page extends AppCompatActivity {
             }
         });
 
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
-        if(currentUser != null){
-            Intent myIntent = new Intent(getApplicationContext(), activity_home_page.class);
-            startActivity(myIntent);
-        }
+//        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+//
+//        if(currentUser != null){
+//            Intent myIntent = new Intent(getApplicationContext(), activity_home_page.class);
+//            startActivity(myIntent);
+//        }
 
     }
 
     private boolean CheckAllFields() {
 
+        email = etEmail.getEditText().getText().toString().trim();
+        password = etPassword.getEditText().getText().toString().trim();
 
-        if (etEmail.length() == 0) {
+
+        if (email.isEmpty()) {
             etEmail.setError("Email is required");
             return false;
         }
-        if (etEmail.getText().toString().matches(emailvalidation))  {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())  {
             etEmail.setError("Enter Correct Email");
             return false;
         }
 
-        if (etPassword.length() == 0) {
+        if (password.isEmpty()) {
             etPassword.setError("Password is required");
             return false;
         }
-        if (etPassword.length() < 8) {
+        if (password.length() < 8) {
             etPassword.setError("Password must be minimum 8 characters");
             return false;
         }

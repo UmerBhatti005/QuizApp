@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,17 +46,24 @@ public class fragment_user extends Fragment {
 
         database = FirebaseFirestore.getInstance();
 
-        final ArrayList<PersonUsersData> users = new ArrayList<>();
+        ArrayList<UsersData> users = new ArrayList<>();
+        final fragment_userAdapter adapter = new fragment_userAdapter(getContext(), users);
 
-        database.collection("User").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        database.collection("User").orderBy("marks", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for(DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                            PersonUsersData user = snapshot.toObject(PersonUsersData.class);
+                            UsersData user = snapshot.toObject(UsersData.class);
                             users.add(user);
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 });
+
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        binding.recyclerView.setAdapter(adapter);
+
+
         return binding.getRoot();
 
     }

@@ -3,6 +3,7 @@ package com.example.quizapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class QuizActivity extends AppCompatActivity {
     CountDownTimer timer;
     FirebaseFirestore database;
     int correctAnswers = 0;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,10 @@ public class QuizActivity extends AppCompatActivity {
 
         final String catId = getIntent().getStringExtra("catId");
 
+        progressDialog = new  ProgressDialog(this);
+
         Random random = new Random();
-        final int rand = random.nextInt(12);
+        final int rand = random.nextInt(5);
 
         database.collection("categories")
                 .document("categories")
@@ -73,17 +77,18 @@ public class QuizActivity extends AppCompatActivity {
                             database.collection("categories")
                                     .document(catId)
                                     .collection("questions")
-                                    .whereLessThanOrEqualTo("index", rand)
                                     .orderBy("index")
                                     .limit(5).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            progressDialog.setTitle("Please Wait...");
+                                            progressDialog.show();
                                             for(DocumentSnapshot snapshot : queryDocumentSnapshots) {
                                                 Questions question = snapshot.toObject(Questions.class);
                                                 questions.add(question);
                                             }
+                                            progressDialog.hide();
                                             if(questions.size() == 0) {
-                                                Log.i("grg", "gregeg");
                                                 alertDialogBuilder.setMessage("No Quiz Here...");
                                                 alertDialogBuilder.setCancelable(true);
                                                 alertDialogBuilder.setPositiveButton(
@@ -198,7 +203,7 @@ public class QuizActivity extends AppCompatActivity {
                 break;
             case R.id.nextBtn:
                 reset();
-                if(index <= questions.size()) {
+                if(index+1 < questions.size()) {
                     index++;
                     setNextQuestion();
                 } else {

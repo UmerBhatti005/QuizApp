@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quizapp.databinding.ActivityResultBinding;
@@ -19,45 +21,44 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ResultActivity extends AppCompatActivity {
 
-    ActivityResultBinding binding;
     int POINTS = 10;
     FirebaseAuth auth;
-
+    Button restartBtnView;
+    TextView quizScore;
+    int points;
+    FirebaseFirestore database;
+    int totalQuestions, correctAnswers;
+    String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityResultBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_result);
 
-        int correctAnswers = getIntent().getIntExtra("correct", 0);
-        int totalQuestions = getIntent().getIntExtra("total", 0);
+        correctAnswers = getIntent().getIntExtra("correct", 0);
+        totalQuestions = getIntent().getIntExtra("total", 0);
 
         auth = FirebaseAuth.getInstance();
-        int points = correctAnswers;
+        points = correctAnswers;
+        quizScore = findViewById(R.id.score);
 
-        binding.score.setText(String.format("%d/%d", correctAnswers, totalQuestions));
-        //binding.earnedCoins.setText(String.valueOf(points));
+        restartBtnView = findViewById(R.id.restartBtn);
 
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        String uid = auth.getCurrentUser().getUid();
+        quizScore.setText(String.format("%d/%d", correctAnswers, totalQuestions));
+
+        database = FirebaseFirestore.getInstance();
+        uid = auth.getCurrentUser().getUid();
         database.collection("User").document(uid).
                 update("marks",points).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_LONG);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG);
                     }
                 });
 
-        binding.restartBtn.setOnClickListener(new View.OnClickListener() {
+        restartBtnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ResultActivity.this, activity_home_page.class));
-                finishAffinity();
+                Intent intent = new Intent(getApplicationContext(), activity_home_page.class);
+                startActivity(intent);
             }
         });
     }

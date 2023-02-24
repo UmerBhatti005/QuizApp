@@ -51,17 +51,16 @@ public class activity_home_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        /*
-         drawer layout instance to toggle the menu icon to open
-         drawer and back button to close drawer
-                drawerLayout = findViewById(R.id.my_drawer_layout);
-                actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-         pass the Open and Close toggle for the drawer layout listener
-         to toggle the button
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        */
+         //drawer layout instance to toggle the menu icon to open
+         //drawer and back button to close drawer
+                //drawerLayout = findViewById(R.id.my_drawer_layout);
+                //actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+         //pass the Open and Close toggle for the drawer layout listener
+         //to toggle the button
+       // drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        ///actionBarDrawerToggle.syncState();
 
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         binding = ActivityHomePageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -110,6 +109,9 @@ public class activity_home_page extends AppCompatActivity {
                     case R.id.ic_baseline_settings_24:
                         loadFragment(new fragment_setting());
                         break;
+                    case R.id.instruction:
+                        loadFragment(new InstructionFragment());
+                        break;
                 }
                 return true;
             }
@@ -144,6 +146,7 @@ public class activity_home_page extends AppCompatActivity {
     // the item click listener callback
     // to open and close the navigation
     // drawer when the icon is clicked
+//    @Override
 //    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 //
 //        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
@@ -159,9 +162,6 @@ public class activity_home_page extends AppCompatActivity {
             ft.replace(R.id.content, fragment);
         ft.commit();
     }
-
-
-
 }
 
 

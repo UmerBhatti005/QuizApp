@@ -16,5 +16,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="update_profile">Update Profile</string>
-
+    <string name="link_no_account"><u>Don`t have an Account?? Sign Up </u></string>
+    <string name="link_login"><u>Already have an account? Login </u></string>
+    <string name="quizzie_logo"><b>Q U I Z</b><i> Z I E</i></string>
 </resources>

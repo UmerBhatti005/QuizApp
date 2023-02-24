@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/ic_baseline_person_24"
-        android:title="Person"
+        android:title="Users"
         android:icon="@drawable/ic_baseline_person_24"/>
     <item
         android:id="@+id/ic_baseline_home_24"
@@ -13,6 +13,10 @@
         android:id="@+id/ic_baseline_settings_24"
         android:title="Settings"
         android:icon="@drawable/ic_baseline_settings_24"/>
+    <item
+        android:id="@+id/instruction"
+        android:title="How to use"
+        android:icon="@drawable/ic_baseline_question_mark_24"/>
 
 
 </menu>
